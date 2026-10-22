@@ -1,5 +1,5 @@
 import * as THREE from '../vendor/three.module.js';
-import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp} from './core.js';
+import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp, MiningSession, raycast} from './core.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('world');
@@ -18,6 +18,8 @@ const sun = new THREE.DirectionalLight(0xffe9be,2.3); sun.position.set(-12,24,10
 const world = createIsland();
 const player = createPlayer();
 const keys = new Set();
+const mining = new MiningSession();
+let leftHeld=false, currentTarget=null;
 let playing = false, started = false, selected = 0, quality = '省電', lastVersion = -1, frameCount = 0, fps = 0, frameStart = performance.now(), toastUntil = 0;
 const counts = Object.fromEntries(TYPES.map(t => [t,0]));
 const textures = {};
@@ -62,6 +64,26 @@ function rebuildTerrain() {
 const cubeGeometry = new THREE.BoxGeometry(1,1,1);
 const selection = new THREE.LineSegments(new THREE.EdgesGeometry(cubeGeometry),new THREE.LineBasicMaterial({color:0xfff4cb,transparent:true,opacity:.75}));
 selection.scale.setScalar(1.004); selection.visible = false; scene.add(selection);
+const crackMaterial=new THREE.MeshBasicMaterial({transparent:true,opacity:.85,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1});
+const cracks=new THREE.Mesh(cubeGeometry,crackMaterial);cracks.scale.setScalar(1.008);cracks.visible=false;scene.add(cracks);
+const lookDirection=new THREE.Vector3();
+function cancelMining(){leftHeld=false;mining.reset();cracks.visible=false;$('mining').hidden=true;}
+function updateMining(dt) {
+  camera.getWorldDirection(lookDirection);
+  currentTarget=raycast(world,camera.position,lookDirection);
+  selection.visible=!!currentTarget;
+  $('target-label').textContent=currentTarget?NAMES[currentTarget.type]:'';
+  if(currentTarget)selection.position.set(currentTarget.x+.5,currentTarget.y+.5,currentTarget.z+.5);
+  const result=mining.update(world,currentTarget,leftHeld||keys.has('KeyE'),dt);
+  cracks.visible=result.stage>=0&&!result.broken;
+  $('mining').hidden=!cracks.visible;
+  if(cracks.visible&&currentTarget){
+    cracks.position.copy(selection.position);
+    crackMaterial.map=textures[`destroy_stage_${result.stage}`];crackMaterial.needsUpdate=true;
+    $('mining-fill').style.width=`${result.progress*100}%`;
+  }
+  if(result.broken)toast(`挖掉了${NAMES[result.broken.type]}`);
+}
 
 function updateInventory() {
   $('inventory').replaceChildren(...TYPES.map((t,i)=>{
@@ -79,7 +101,7 @@ function toast(message) {$('toast').textContent=message; $('toast').classList.ad
 
 function pause() {
   if (!started) return;
-  playing=false; keys.clear();
+  playing=false; keys.clear();cancelMining();
   if (document.pointerLockElement) document.exitPointerLock();
   $('menu').hidden=false; document.body.classList.remove('playing');
 }
@@ -104,6 +126,9 @@ document.addEventListener('keydown',e=>{
   if (/^Digit[1-8]$/.test(e.code)) {selected=+e.code.slice(-1)-1;updateInventory();}
 });
 document.addEventListener('keyup',e=>keys.delete(e.code));
+canvas.addEventListener('mousedown',e=>{if(playing&&e.button===0)leftHeld=true;});
+document.addEventListener('mouseup',e=>{if(e.button===0){leftHeld=false;mining.reset();cracks.visible=false;$('mining').hidden=true;}});
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('mousemove',e=>{
   if(playing&&document.pointerLockElement===canvas) {player.yaw-=e.movementX*.0023;player.pitch=clamp(player.pitch-e.movementY*.0023,-1.5,1.5);}
 });
@@ -131,6 +156,7 @@ function frame(now) {
     camera.setViewOffset(innerWidth,innerHeight,-innerWidth*.12,0,innerWidth,innerHeight);
   }
   if (started) camera.clearViewOffset();
+  if(playing)updateMining(dt);
   if (lastVersion!==world.version&&materials.dirt) rebuildTerrain();
   if (now>toastUntil) $('toast').classList.remove('visible');
   renderer.render(scene,camera);

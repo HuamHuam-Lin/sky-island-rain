@@ -127,3 +127,45 @@ export function exposedFaces(w) {
   }
   return faces;
 }
+
+export const BREAK_SECONDS = {grass:.72,dirt:.72,stone:2,log:1.2,leaves:.45,planks:1,sand:.6,brick:1.8};
+export class MiningSession {
+  constructor() {this.reset();}
+  reset() {this.targetKey=null;this.elapsed=0;this.progress=0;}
+  update(w,target,held,dt) {
+    const type = target ? w.get(target.x,target.y,target.z) : null;
+    if (!held || !type) {this.reset();return {progress:0,stage:-1,broken:null};}
+    const k=key(target.x,target.y,target.z);
+    if (k!==this.targetKey) {this.reset();this.targetKey=k;}
+    this.elapsed+=Math.max(0,Number.isFinite(dt)?dt:0);
+    this.progress=this.elapsed/BREAK_SECONDS[type];
+    if (this.progress+1e-9>=1) {
+      w.set(target.x,target.y,target.z,null);
+      const broken={x:target.x,y:target.y,z:target.z,type};this.reset();
+      return {progress:1,stage:9,broken};
+    }
+    return {progress:this.progress,stage:Math.min(9,Math.floor(this.progress*10)),broken:null};
+  }
+}
+
+// 逐格穿越的射線，直接讀取方塊資料，無需對每顆方塊逐一做碰撞。
+export function raycast(w,origin,direction,maxDistance=6) {
+  const len=Math.hypot(direction.x,direction.y,direction.z);
+  if(!len||!Number.isFinite(len))return null;
+  const d=[direction.x/len,direction.y/len,direction.z/len];
+  const o=[origin.x,origin.y,origin.z], cell=o.map(Math.floor);
+  const step=d.map(v=>Math.sign(v));
+  const delta=d.map(v=>v===0?Infinity:Math.abs(1/v));
+  const next=d.map((v,i)=>v===0?Infinity:((v>0?cell[i]+1:cell[i])-o[i])/v);
+  let distance=0,normal=[0,0,0];
+  for(let i=0;i<200&&distance<=maxDistance;i++) {
+    const type=w.get(...cell);
+    if(type)return {x:cell[0],y:cell[1],z:cell[2],type,distance,normal};
+    let axis=0;
+    if(next[1]<next[axis])axis=1;
+    if(next[2]<next[axis])axis=2;
+    distance=next[axis];cell[axis]+=step[axis];next[axis]+=delta[axis];
+    normal=[0,0,0];normal[axis]=-step[axis];
+  }
+  return null;
+}

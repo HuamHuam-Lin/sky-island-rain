@@ -9,7 +9,7 @@ http.createServer(async (req,res) => {
   try {
     const url = new URL(req.url, 'http://localhost');
     let file = path.resolve(root,'.'+decodeURIComponent(url.pathname));
-    if (!file.startsWith(root)) {res.writeHead(403).end(); return;}
+    if (file !== path.resolve(root) && !file.startsWith(root)) {res.writeHead(403).end(); return;}
     if ((await stat(file)).isDirectory()) file = path.join(file,'index.html');
     const body = await readFile(file);
     res.writeHead(200, {'Content-Type':mime[path.extname(file)] || 'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
