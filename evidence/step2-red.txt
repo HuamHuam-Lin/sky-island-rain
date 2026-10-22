@@ -1,0 +1,94 @@
+✔ STEP 0：世界固定為 24 格且拒絕越界與未知方塊 (0.6672ms)
+✔ STEP 0：地形具有可走出生點、小島底部留空、屋頂與八種方塊 (1.789ms)
+✔ STEP 0：重力會落到地面，不穿透地板 (1.5883ms)
+✔ STEP 0：牆壁擋住走路，斜走不會比較快 (4.6323ms)
+✔ STEP 0：跳躍只能在落地時起跳，天花板擋住頭部 (0.385ms)
+✔ STEP 0：暫停不移動，長時間步長受限，落島回安全點 (1.3123ms)
+✔ STEP 0：只產生露出的方塊面，兩顆相鄰方塊合計十面 (0.2005ms)
+✔ STEP 0：出生點被玩家蓋住後仍會找安全站立處 (0.3597ms)
+✔ STEP 1：泥土裂痕逐漸加深，0.72 秒挖掉 (1.2978ms)
+✔ STEP 1：單點不挖掉，放開歸零，下次從頭開始 (0.1916ms)
+✔ STEP 1：挖石頭需約兩秒，不會在泥土時間就消失 (0.2771ms)
+✔ STEP 1：換目標、失去目標與暫停後不能沿用裂痕 (0.2809ms)
+✔ STEP 1：射線命中最近方塊，回傳外側面，超過六格不命中 (1.1309ms)
+✔ STEP 1：射線可擊中島外側，零向量或空目標不會破壞 (0.2077ms)
+✖ STEP 2：方塊挖掉後彈出同種類小方塊並旋轉 (0.7307ms)
+✖ STEP 2：掉落物落到地上停住，不懸浮、不穿地 (1.0609ms)
+✖ STEP 2：地面被挖空後繼續掉落，不留在半空 (0.1935ms)
+✖ STEP 2：正上方挖方塊彈出時不鑽進上層方塊 (0.1521ms)
+✖ STEP 2：大時間步長與高速落下仍不穿透地板 (0.1186ms)
+✖ STEP 2：掉落島外的物品會清除，避免無限累積 (0.0784ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 14
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 113.0958
+
+✖ failing tests:
+
+test at tests\step2.test.js:6:1
+✖ STEP 2：方塊挖掉後彈出同種類小方塊並旋轉 (0.7307ms)
+  TypeError: core.createDrop is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step2.test.js:7:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at tests\step2.test.js:13:1
+✖ STEP 2：掉落物落到地上停住，不懸浮、不穿地 (1.0609ms)
+  TypeError: core.createDrop is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step2.test.js:14:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests\step2.test.js:22:1
+✖ STEP 2：地面被挖空後繼續掉落，不留在半空 (0.1935ms)
+  TypeError: core.createDrop is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step2.test.js:24:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step2.test.js:32:1
+✖ STEP 2：正上方挖方塊彈出時不鑽進上層方塊 (0.1521ms)
+  TypeError: core.createDrop is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step2.test.js:34:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step2.test.js:38:1
+✖ STEP 2：大時間步長與高速落下仍不穿透地板 (0.1186ms)
+  TypeError: core.createDrop is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step2.test.js:39:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step2.test.js:44:1
+✖ STEP 2：掉落島外的物品會清除，避免無限累積 (0.0784ms)
+  TypeError: core.createDrop is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step2.test.js:45:16)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
