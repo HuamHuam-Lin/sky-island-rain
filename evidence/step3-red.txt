@@ -1,0 +1,124 @@
+✔ STEP 0：世界固定為 24 格且拒絕越界與未知方塊 (0.7135ms)
+✔ STEP 0：地形具有可走出生點、小島底部留空、屋頂與八種方塊 (2.1065ms)
+✔ STEP 0：重力會落到地面，不穿透地板 (1.6249ms)
+✔ STEP 0：牆壁擋住走路，斜走不會比較快 (2.2405ms)
+✔ STEP 0：跳躍只能在落地時起跳，天花板擋住頭部 (0.2028ms)
+✔ STEP 0：暫停不移動，長時間步長受限，落島回安全點 (1.1289ms)
+✔ STEP 0：只產生露出的方塊面，兩顆相鄰方塊合計十面 (0.2029ms)
+✔ STEP 0：出生點被玩家蓋住後仍會找安全站立處 (0.4964ms)
+✔ STEP 1：泥土裂痕逐漸加深，0.72 秒挖掉 (2.6044ms)
+✔ STEP 1：單點不挖掉，放開歸零，下次從頭開始 (0.8881ms)
+✔ STEP 1：挖石頭需約兩秒，不會在泥土時間就消失 (0.1303ms)
+✔ STEP 1：換目標、失去目標與暫停後不能沿用裂痕 (0.1379ms)
+✔ STEP 1：射線命中最近方塊，回傳外側面，超過六格不命中 (0.7484ms)
+✔ STEP 1：射線可擊中島外側，零向量或空目標不會破壞 (0.137ms)
+✔ STEP 2：方塊挖掉後彈出同種類小方塊並旋轉 (2.9796ms)
+✔ STEP 2：掉落物落到地上停住，不懸浮、不穿地 (3.8688ms)
+✔ STEP 2：地面被挖空後繼續掉落，不留在半空 (2.052ms)
+✔ STEP 2：正上方挖方塊彈出時不鑽進上層方塊 (0.4833ms)
+✔ STEP 2：大時間步長與高速落下仍不穿透地板 (0.1812ms)
+✔ STEP 2：掉落島外的物品會清除，避免無限累積 (0.1434ms)
+✖ STEP 3：三格外不會吸取物品 (0.7349ms)
+✖ STEP 3：靠近先飛向玩家，動畫結束才增加一個 (0.1862ms)
+✖ STEP 3：同一顆物品再更新也只能加一次 (0.0862ms)
+✖ STEP 3：連挖兩格的掉落物都能撿到 (0.0982ms)
+✖ STEP 3：滿 64 個不會吸入，空出一格後才可撿 (0.1196ms)
+✖ STEP 3：兩顆同時飛入第 64 格也不會超過上限 (0.0957ms)
+✖ STEP 3：牆壁不會隔空吸取物品 (0.0775ms)
+✖ STEP 3：物品欄初始化為八種、每格零個，不含未知物品 (0.0653ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 20
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 132.6095
+
+✖ failing tests:
+
+test at tests\step3.test.js:8:1
+✖ STEP 3：三格外不會吸取物品 (0.7349ms)
+  TypeError: core.createInventory is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step3.test.js:9:57)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at tests\step3.test.js:14:1
+✖ STEP 3：靠近先飛向玩家，動畫結束才增加一個 (0.1862ms)
+  TypeError: core.createInventory is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step3.test.js:15:57)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests\step3.test.js:23:1
+✖ STEP 3：同一顆物品再更新也只能加一次 (0.0862ms)
+  TypeError: core.createInventory is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step3.test.js:24:57)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step3.test.js:28:1
+✖ STEP 3：連挖兩格的掉落物都能撿到 (0.0982ms)
+  TypeError: core.createInventory is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step3.test.js:29:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step3.test.js:34:1
+✖ STEP 3：滿 64 個不會吸入，空出一格後才可撿 (0.1196ms)
+  TypeError: core.createInventory is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step3.test.js:35:57)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step3.test.js:40:1
+✖ STEP 3：兩顆同時飛入第 64 格也不會超過上限 (0.0957ms)
+  TypeError: core.createInventory is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step3.test.js:41:48)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step3.test.js:47:1
+✖ STEP 3：牆壁不會隔空吸取物品 (0.0775ms)
+  TypeError: core.createInventory is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step3.test.js:48:57)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step3.test.js:53:1
+✖ STEP 3：物品欄初始化為八種、每格零個，不含未知物品 (0.0653ms)
+  TypeError: core.createInventory is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step3.test.js:54:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
