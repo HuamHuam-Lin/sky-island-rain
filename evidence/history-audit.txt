@@ -1,0 +1,45 @@
+[
+  {
+    "step": 0,
+    "red": "6fbeed2",
+    "green": "94b5551",
+    "newFailures": 8,
+    "testsUnchanged": true
+  },
+  {
+    "step": 1,
+    "red": "b47346a",
+    "green": "34ee5b4",
+    "newFailures": 6,
+    "testsUnchanged": true
+  },
+  {
+    "step": 2,
+    "red": "7a4c6a2",
+    "green": "ecf97e6",
+    "newFailures": 6,
+    "testsUnchanged": true
+  },
+  {
+    "step": 3,
+    "red": "1d274f2",
+    "green": "22c5f62",
+    "newFailures": 8,
+    "testsUnchanged": true
+  },
+  {
+    "step": 4,
+    "red": "93e6e71",
+    "green": "a2fa1dc",
+    "newFailures": 7,
+    "testsUnchanged": true
+  },
+  {
+    "step": 5,
+    "red": "85e4672",
+    "green": "8c6c7c0",
+    "newFailures": 8,
+    "testsUnchanged": true
+  }
+]
+紀錄核對通過：六步均先失敗再通過，實作提交沒有修改測試，驗收表維持原始內容。
