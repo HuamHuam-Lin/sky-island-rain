@@ -1,0 +1,88 @@
+✔ STEP 0：世界固定為 24 格且拒絕越界與未知方塊 (0.6393ms)
+✔ STEP 0：地形具有可走出生點、小島底部留空、屋頂與八種方塊 (3.5749ms)
+✔ STEP 0：重力會落到地面，不穿透地板 (1.5002ms)
+✔ STEP 0：牆壁擋住走路，斜走不會比較快 (2.6886ms)
+✔ STEP 0：跳躍只能在落地時起跳，天花板擋住頭部 (0.2295ms)
+✔ STEP 0：暫停不移動，長時間步長受限，落島回安全點 (0.9045ms)
+✔ STEP 0：只產生露出的方塊面，兩顆相鄰方塊合計十面 (0.1797ms)
+✔ STEP 0：出生點被玩家蓋住後仍會找安全站立處 (0.3812ms)
+✖ STEP 1：泥土裂痕逐漸加深，0.72 秒挖掉 (0.7016ms)
+✖ STEP 1：單點不挖掉，放開歸零，下次從頭開始 (0.1138ms)
+✖ STEP 1：挖石頭需約兩秒，不會在泥土時間就消失 (0.0828ms)
+✖ STEP 1：換目標、失去目標與暫停後不能沿用裂痕 (0.1482ms)
+✖ STEP 1：射線命中最近方塊，回傳外側面，超過六格不命中 (0.1304ms)
+✖ STEP 1：射線可擊中島外側，零向量或空目標不會破壞 (0.0975ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 8
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 95.3766
+
+✖ failing tests:
+
+test at tests\step1.test.js:8:1
+✖ STEP 1：泥土裂痕逐漸加深，0.72 秒挖掉 (0.7016ms)
+  TypeError: core.MiningSession is not a constructor
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step1.test.js:10:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at tests\step1.test.js:19:1
+✖ STEP 1：單點不挖掉，放開歸零，下次從頭開始 (0.1138ms)
+  TypeError: core.MiningSession is not a constructor
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step1.test.js:20:53)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests\step1.test.js:28:1
+✖ STEP 1：挖石頭需約兩秒，不會在泥土時間就消失 (0.0828ms)
+  TypeError: core.MiningSession is not a constructor
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step1.test.js:29:26)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step1.test.js:36:1
+✖ STEP 1：換目標、失去目標與暫停後不能沿用裂痕 (0.1482ms)
+  TypeError: core.MiningSession is not a constructor
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step1.test.js:37:53)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step1.test.js:46:1
+✖ STEP 1：射線命中最近方塊，回傳外側面，超過六格不命中 (0.1304ms)
+  TypeError: core.raycast is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step1.test.js:48:20)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step1.test.js:55:1
+✖ STEP 1：射線可擊中島外側，零向量或空目標不會破壞 (0.0975ms)
+  TypeError: core.raycast is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step1.test.js:57:21)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
