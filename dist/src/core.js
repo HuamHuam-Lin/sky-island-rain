@@ -239,3 +239,40 @@ export function placeBlock(w,hit,type,bag,p){
   w.set(x,y,z,type);bag[type]--;
   return {ok:true,x,y,z};
 }
+
+// 柱頂高度只在方塊改變時重算；雨滴每格更新不掃描整個世界。
+export function roofHeight(w,x,z){
+  if(w._roofCacheVersion!==w.version){
+    const heights=new Float32Array(w.size*w.size);heights.fill(-8);
+    for(const k of w.blocks.keys()){
+      const [bx,by,bz]=k.split(',').map(Number),i=bx+bz*w.size;
+      heights[i]=Math.max(heights[i],by+1);
+    }
+    w._roofHeights=heights;w._roofCacheVersion=w.version;
+  }
+  x=Math.floor(x);z=Math.floor(z);
+  return x<0||z<0||x>=w.size||z>=w.size?-8:w._roofHeights[x+z*w.size];
+}
+export function isSheltered(w,p){return roofHeight(w,p.x,p.z)>p.y+PLAYER_HEIGHT+.001;}
+export function rainSegment(w,d){
+  const top=roofHeight(w,d.x,d.z);
+  if(d.y<=top)return null;
+  return {top:d.y,bottom:Math.max(top,d.y-.8)};
+}
+export class Weather{
+  constructor(){
+    this.raining=false;this.seed=72026;
+    this.drops=Array.from({length:240},()=>({x:this.random()*24,y:4+this.random()*20,z:this.random()*24}));
+  }
+  random(){this.seed=(Math.imul(this.seed,1664525)+1013904223)>>>0;return this.seed/4294967296;}
+  toggle(){this.raining=!this.raining;return this.raining;}
+  update(w,dt){
+    if(!this.raining)return;
+    dt=clamp(Number.isFinite(dt)?dt:0,0,.05);
+    for(const d of this.drops){
+      d.x=(d.x+dt*.6)%24;d.z=(d.z+dt*.25)%24;
+      d.y-=dt*12;
+      if(d.y<=roofHeight(w,d.x,d.z)+.01)d.y=24+this.random()*2;
+    }
+  }
+}

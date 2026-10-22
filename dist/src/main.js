@@ -1,5 +1,5 @@
 import * as THREE from '../vendor/three.module.js';
-import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp, MiningSession, raycast, createDrop, updateDrop, createInventory, collectDrop, placeBlock} from './core.js';
+import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp, MiningSession, raycast, createDrop, updateDrop, createInventory, collectDrop, placeBlock, Weather, rainSegment, isSheltered} from './core.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('world');
@@ -67,6 +67,35 @@ selection.scale.setScalar(1.004); selection.visible = false; scene.add(selection
 const crackMaterial=new THREE.MeshBasicMaterial({transparent:true,opacity:.85,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1});
 const cracks=new THREE.Mesh(cubeGeometry,crackMaterial);cracks.scale.setScalar(1.008);cracks.visible=false;scene.add(cracks);
 const lookDirection=new THREE.Vector3();
+const weather=new Weather();
+const rainPositions=new Float32Array(weather.drops.length*6);
+const rainGeometry=new THREE.BufferGeometry();
+rainGeometry.setAttribute('position',new THREE.BufferAttribute(rainPositions,3).setUsage(THREE.DynamicDrawUsage));
+const rainLines=new THREE.LineSegments(rainGeometry,new THREE.LineBasicMaterial({color:0x54798e,transparent:true,opacity:.62,depthWrite:false}));
+rainLines.frustumCulled=false;rainLines.visible=false;scene.add(rainLines);
+const skySunny=new THREE.Color(0xcadfdc),skyRain=new THREE.Color(0xa7bcc1),skyColor=skySunny.clone();
+function toggleWeather(){
+  const raining=weather.toggle();
+  $('weather').innerHTML=`${raining?'☂ 雨天':'☀ 晴天'} <kbd>R</kbd>`;
+  $('weather').setAttribute('aria-pressed',String(raining));
+  document.body.classList.toggle('raining',raining);
+  toast(raining?'下雨了。找一處屋簷，或自己蓋一個。':'雨停了，小島放晴。');
+}
+function updateWeather(dt){
+  if(playing||!started)weather.update(world,dt);
+  rainLines.visible=weather.raining;
+  if(weather.raining){
+    let count=0;
+    for(const d of weather.drops){const line=rainSegment(world,d);if(!line)continue;
+      rainPositions.set([d.x,line.top,d.z,d.x,line.bottom,d.z],count*6);count++;
+    }
+    rainGeometry.attributes.position.needsUpdate=true;rainGeometry.setDrawRange(0,count*2);
+  }
+  skyColor.lerp(weather.raining?skyRain:skySunny,Math.min(1,dt*3));
+  renderer.setClearColor(skyColor);scene.fog.color.copy(skyColor);
+  sun.intensity+=(weather.raining?1.2-sun.intensity:2.3-sun.intensity)*Math.min(1,dt*3);
+  if(started)$('shelter').textContent=weather.raining?(isSheltered(world,player)?'屋簷下':'淋雨中'):'晴天漫步';
+}
 const drops=[];
 const dropMeshes=new Map();
 const dropMaterials={};
@@ -137,6 +166,7 @@ async function start() {
 $('start').addEventListener('click',start);
 $('resume').addEventListener('click',start);
 $('pause').addEventListener('click',pause);
+$('weather').addEventListener('click',toggleWeather);
 canvas.addEventListener('click',()=>{if(playing&&!document.pointerLockElement) canvas.requestPointerLock()?.catch(()=>{});});
 $('fullscreen').addEventListener('click',async()=>{try{if(document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen();}catch{toast('瀏覽器目前無法進入全螢幕');}});
 $('quality').addEventListener('click',()=>{quality=quality==='省電'?'細緻':'省電'; renderer.setPixelRatio(quality==='省電'?1:Math.min(devicePixelRatio,1.75)); renderer.setSize(innerWidth,innerHeight); $('quality').textContent=`畫質：${quality}`;});
@@ -148,6 +178,7 @@ document.addEventListener('keydown',e=>{
   if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
   keys.add(e.code);
   if(e.code==='KeyQ'&&!e.repeat)place();
+  if(e.code==='KeyR'&&!e.repeat)toggleWeather();
   if (/^Digit[1-8]$/.test(e.code)) {selected=+e.code.slice(-1)-1;updateInventory();}
 });
 document.addEventListener('keyup',e=>keys.delete(e.code));
@@ -182,6 +213,7 @@ function frame(now) {
   }
   if (started) camera.clearViewOffset();
   if(playing){updateMining(dt);updateDrops(dt);}
+  updateWeather(dt);
   if (lastVersion!==world.version&&materials.dirt) rebuildTerrain();
   if (now>toastUntil) $('toast').classList.remove('visible');
   renderer.render(scene,camera);
@@ -199,5 +231,5 @@ try {
     if(!name.startsWith('destroy_')) materials[name]=new THREE.MeshLambertMaterial({map:texture});
   }));
   for(const type of TYPES)dropMaterials[type]=[0,1,2,3,4,5].map(side=>materials[textureFor(type,side)]);
-  rebuildTerrain();$('start').disabled=false;$('start-label').textContent='走進小島';requestAnimationFrame(frame);
+  rebuildTerrain();$('weather').disabled=false;$('start').disabled=false;$('start-label').textContent='走進小島';requestAnimationFrame(frame);
 } catch(error) {$('fatal').hidden=false;$('fatal').textContent=`素材載入失敗。請透過靜態網站網址開啟，不要直接雙擊 HTML。\n${error.message}`;}

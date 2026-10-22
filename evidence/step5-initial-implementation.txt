@@ -1,0 +1,79 @@
+✔ STEP 0：世界固定為 24 格且拒絕越界與未知方塊 (3.0525ms)
+✔ STEP 0：地形具有可走出生點、小島底部留空、屋頂與八種方塊 (3.4345ms)
+✔ STEP 0：重力會落到地面，不穿透地板 (2.6623ms)
+✔ STEP 0：牆壁擋住走路，斜走不會比較快 (2.7303ms)
+✔ STEP 0：跳躍只能在落地時起跳，天花板擋住頭部 (0.2884ms)
+✔ STEP 0：暫停不移動，長時間步長受限，落島回安全點 (1.2946ms)
+✔ STEP 0：只產生露出的方塊面，兩顆相鄰方塊合計十面 (0.2292ms)
+✔ STEP 0：出生點被玩家蓋住後仍會找安全站立處 (0.4115ms)
+✔ STEP 1：泥土裂痕逐漸加深，0.72 秒挖掉 (1.5268ms)
+✔ STEP 1：單點不挖掉，放開歸零，下次從頭開始 (2.3905ms)
+✔ STEP 1：挖石頭需約兩秒，不會在泥土時間就消失 (0.2158ms)
+✔ STEP 1：換目標、失去目標與暫停後不能沿用裂痕 (0.1507ms)
+✔ STEP 1：射線命中最近方塊，回傳外側面，超過六格不命中 (0.7449ms)
+✔ STEP 1：射線可擊中島外側，零向量或空目標不會破壞 (0.1241ms)
+✔ STEP 2：方塊挖掉後彈出同種類小方塊並旋轉 (2.7906ms)
+✔ STEP 2：掉落物落到地上停住，不懸浮、不穿地 (3.6393ms)
+✔ STEP 2：地面被挖空後繼續掉落，不留在半空 (1.5595ms)
+✔ STEP 2：正上方挖方塊彈出時不鑽進上層方塊 (0.4598ms)
+✔ STEP 2：大時間步長與高速落下仍不穿透地板 (0.1388ms)
+✔ STEP 2：掉落島外的物品會清除，避免無限累積 (0.4623ms)
+✔ STEP 3：三格外不會吸取物品 (2.0481ms)
+✔ STEP 3：靠近先飛向玩家，動畫結束才增加一個 (0.3438ms)
+✔ STEP 3：同一顆物品再更新也只能加一次 (0.1276ms)
+✔ STEP 3：連挖兩格的掉落物都能撿到 (0.1459ms)
+✔ STEP 3：滿 64 個不會吸入，空出一格後才可撿 (0.1211ms)
+✔ STEP 3：兩顆同時飛入第 64 格也不會超過上限 (0.1602ms)
+✔ STEP 3：牆壁不會隔空吸取物品 (0.2407ms)
+✔ STEP 3：物品欄初始化為八種、每格零個，不含未知物品 (0.5816ms)
+✔ STEP 4：選有庫存的方塊，放置一個並扣一 (1.5926ms)
+✔ STEP 4：零個不放置，數量不會變負數 (0.4904ms)
+✔ STEP 4：自己身體所在格與已占用格不可放置且不扣數量 (0.2567ms)
+✔ STEP 4：世界外、超過六格、沒有支撐面都不放置 (0.2517ms)
+✔ STEP 4：無效目標與非單位面不會消耗物品 (0.2528ms)
+✔ STEP 4：第 1 批整串，挖掉、落地、飛入、放回，方塊與物品數守恆 (4.7087ms)
+✔ STEP 4：滿世界頂端不可再往上蓋 (0.3268ms)
+✔ STEP 5：按 R 對應晴雨切換，兩次回到晴天 (1.3064ms)
+✔ STEP 5：雨滴有限，雨天下落，晴天不更新雨滴 (16.0182ms)
+✔ STEP 5：屋頂擋雨，雨線終點不會穿過屋頂 (0.2998ms)
+✔ STEP 5：屋簷下與淋雨位置判斷，不把腳下地板算屋頂 (1.7794ms)
+✔ STEP 5：挖掉屋頂下方開始落雨，補回立即重新擋雨 (0.1805ms)
+✖ STEP 5：落到屋頂的雨滴回到上方，不在棚內繼續落下 (1.1012ms)
+✔ STEP 5：雨天完整挖、掉、撿、放，物品數量回到原本 (4.3786ms)
+✔ STEP 5：跑一萬格更新仍維持固定雨滴數量 (30.3876ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 42
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 249.266
+
+✖ failing tests:
+
+test at tests\step5.test.js:46:1
+✖ STEP 5：落到屋頂的雨滴回到上方，不在棚內繼續落下 (1.1012ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + {
+  +   bottom: 3.2,
+  +   top: 4
+  + }
+  - null
+  
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step5.test.js:52:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { top: 4, bottom: 3.2 },
+    expected: null,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
