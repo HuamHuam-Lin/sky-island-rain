@@ -1,5 +1,5 @@
 import * as THREE from '../vendor/three.module.js';
-import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp, MiningSession, raycast, createDrop, updateDrop} from './core.js';
+import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp, MiningSession, raycast, createDrop, updateDrop, createInventory, collectDrop} from './core.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('world');
@@ -21,7 +21,7 @@ const keys = new Set();
 const mining = new MiningSession();
 let leftHeld=false, currentTarget=null;
 let playing = false, started = false, selected = 0, quality = '省電', lastVersion = -1, frameCount = 0, fps = 0, frameStart = performance.now(), toastUntil = 0;
-const counts = Object.fromEntries(TYPES.map(t => [t,0]));
+const counts = createInventory();
 const textures = {};
 const loader = new THREE.TextureLoader();
 const textureNames = ['grass_top','grass_side','dirt','stone','log_side','log_top','leaves','planks','sand','brick',...Array.from({length:10},(_,i)=>`destroy_stage_${i}`)];
@@ -77,6 +77,7 @@ function addDrop(block){
 function updateDrops(dt){
   for(let i=drops.length-1;i>=0;i--){
     const d=drops[i];updateDrop(world,d,dt);
+    if(collectDrop(world,d,player,counts,dt)){updateInventory();toast(`收到了${NAMES[d.type]} +1`);}
     const mesh=dropMeshes.get(d.id);
     if(d.removed){scene.remove(mesh);dropMeshes.delete(d.id);drops.splice(i,1);continue;}
     mesh.position.set(d.x,d.y,d.z);mesh.rotation.y=d.rotation;

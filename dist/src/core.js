@@ -205,3 +205,23 @@ export function updateDrop(w,d,dt) {
     d.y=old+dy*lo;d.grounded=d.vy<0;d.vy=0;
   }
 }
+
+export const INVENTORY_LIMIT=64;
+export function createInventory(){return Object.fromEntries(TYPES.map(t=>[t,0]));}
+export function collectDrop(w,d,p,bag,dt){
+  if(d.removed)return false;
+  if((bag[d.type]??0)>=INVENTORY_LIMIT){d.phase='ground';return false;}
+  const target={x:p.x,y:p.y+.85,z:p.z};
+  const dx=target.x-d.x,dy=target.y-d.y,dz=target.z-d.z;
+  const distance=Math.hypot(dx,dy,dz);
+  if(d.phase!=='collecting'){
+    if(distance>1.65)return false;
+    const obstruction=raycast(w,d,{x:dx,y:dy,z:dz},distance);
+    if(obstruction&&obstruction.distance<distance-.05)return false;
+    d.phase='collecting';
+  }
+  const t=1-Math.exp(-18*clamp(dt,0,.05));
+  d.x+=dx*t;d.y+=dy*t;d.z+=dz*t;d.rotation+=clamp(dt,0,.05)*4;
+  if(distance<.12){bag[d.type]=(bag[d.type]??0)+1;d.removed=true;return true;}
+  return false;
+}
