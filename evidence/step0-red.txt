@@ -1,0 +1,106 @@
+✖ STEP 0：世界固定為 24 格且拒絕越界與未知方塊 (1.1812ms)
+✖ STEP 0：地形具有可走出生點、小島底部留空、屋頂與八種方塊 (0.1087ms)
+✖ STEP 0：重力會落到地面，不穿透地板 (0.7659ms)
+✖ STEP 0：牆壁擋住走路，斜走不會比較快 (0.153ms)
+✖ STEP 0：跳躍只能在落地時起跳，天花板擋住頭部 (0.3121ms)
+✖ STEP 0：暫停不移動，長時間步長受限，落島回安全點 (0.0938ms)
+✖ STEP 0：只產生露出的方塊面，兩顆相鄰方塊合計十面 (0.0799ms)
+✖ STEP 0：出生點被玩家蓋住後仍會找安全站立處 (0.0802ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 0
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 101.1786
+
+✖ failing tests:
+
+test at tests\step0.test.js:5:1
+✖ STEP 0：世界固定為 24 格且拒絕越界與未知方塊 (1.1812ms)
+  TypeError: core.World is not a constructor
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:6:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+
+test at tests\step0.test.js:17:1
+✖ STEP 0：地形具有可走出生點、小島底部留空、屋頂與八種方塊 (0.1087ms)
+  TypeError: core.createIsland is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:18:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+
+test at tests\step0.test.js:34:1
+✖ STEP 0：重力會落到地面，不穿透地板 (0.7659ms)
+  TypeError: core.createPlayer is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:35:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step0.test.js:42:1
+✖ STEP 0：牆壁擋住走路，斜走不會比較快 (0.153ms)
+  TypeError: core.World is not a constructor
+      at floor (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:29:13)
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:43:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step0.test.js:55:1
+✖ STEP 0：跳躍只能在落地時起跳，天花板擋住頭部 (0.3121ms)
+  TypeError: core.World is not a constructor
+      at floor (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:29:13)
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:56:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step0.test.js:67:1
+✖ STEP 0：暫停不移動，長時間步長受限，落島回安全點 (0.0938ms)
+  TypeError: core.createIsland is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:68:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step0.test.js:81:1
+✖ STEP 0：只產生露出的方塊面，兩顆相鄰方塊合計十面 (0.0799ms)
+  TypeError: core.World is not a constructor
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:82:13)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+
+test at tests\step0.test.js:90:1
+✖ STEP 0：出生點被玩家蓋住後仍會找安全站立處 (0.0802ms)
+  TypeError: core.createIsland is not a function
+      at TestContext.<anonymous> (file:///C:/Users/user/Documents/ChatGPT/%E7%A9%BA%E4%B8%AD%E4%B9%8B%E5%B3%B6/sky-island/tests/step0.test.js:91:18)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
