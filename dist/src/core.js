@@ -169,3 +169,39 @@ export function raycast(w,origin,direction,maxDistance=6) {
   }
   return null;
 }
+
+export const DROP_RADIUS=.16;
+let dropId=0;
+export function createDrop(block) {
+  return {id:++dropId,type:block.type,x:block.x+.5,y:block.y+.5,z:block.z+.5,vy:3.2,rotation:0,grounded:false,removed:false,phase:'ground'};
+}
+
+function dropOverlaps(w,d,y) {
+  const r=DROP_RADIUS,e=1e-7;
+  for(let x=Math.floor(d.x-r+e);x<=Math.floor(d.x+r-e);x++)
+    for(let z=Math.floor(d.z-r+e);z<=Math.floor(d.z+r-e);z++)
+      for(let by=Math.floor(y-r+e);by<=Math.floor(y+r-e);by++)
+        if(w.get(x,by,z))return true;
+  return false;
+}
+
+export function updateDrop(w,d,dt) {
+  if(d.removed||d.phase==='collecting')return;
+  if(d.y<-12){d.removed=true;return;}
+  dt=clamp(Number.isFinite(dt)?dt:0,0,.05);
+  d.rotation+=dt*1.4;
+  const parts=Math.max(1,Math.ceil(dt/.005));
+  for(let i=0;i<parts;i++){
+    const h=dt/parts;
+    d.vy=Math.max(-30,d.vy-14*h);
+    const old=d.y,dy=d.vy*h;
+    d.grounded=false;
+    if(!dropOverlaps(w,d,old+dy)){d.y+=dy;continue;}
+    let lo=0,hi=1;
+    for(let j=0;j<18;j++){
+      const m=(lo+hi)/2;
+      if(dropOverlaps(w,d,old+dy*m))hi=m;else lo=m;
+    }
+    d.y=old+dy*lo;d.grounded=d.vy<0;d.vy=0;
+  }
+}

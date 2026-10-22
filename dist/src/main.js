@@ -1,5 +1,5 @@
 import * as THREE from '../vendor/three.module.js';
-import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp, MiningSession, raycast} from './core.js';
+import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp, MiningSession, raycast, createDrop, updateDrop} from './core.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('world');
@@ -67,6 +67,21 @@ selection.scale.setScalar(1.004); selection.visible = false; scene.add(selection
 const crackMaterial=new THREE.MeshBasicMaterial({transparent:true,opacity:.85,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-1});
 const cracks=new THREE.Mesh(cubeGeometry,crackMaterial);cracks.scale.setScalar(1.008);cracks.visible=false;scene.add(cracks);
 const lookDirection=new THREE.Vector3();
+const drops=[];
+const dropMeshes=new Map();
+const dropMaterials={};
+function addDrop(block){
+  const drop=createDrop(block);drops.push(drop);
+  const mesh=new THREE.Mesh(cubeGeometry,dropMaterials[drop.type]);mesh.scale.setScalar(.32);scene.add(mesh);dropMeshes.set(drop.id,mesh);
+}
+function updateDrops(dt){
+  for(let i=drops.length-1;i>=0;i--){
+    const d=drops[i];updateDrop(world,d,dt);
+    const mesh=dropMeshes.get(d.id);
+    if(d.removed){scene.remove(mesh);dropMeshes.delete(d.id);drops.splice(i,1);continue;}
+    mesh.position.set(d.x,d.y,d.z);mesh.rotation.y=d.rotation;
+  }
+}
 function cancelMining(){leftHeld=false;mining.reset();cracks.visible=false;$('mining').hidden=true;}
 function updateMining(dt) {
   camera.getWorldDirection(lookDirection);
@@ -82,7 +97,7 @@ function updateMining(dt) {
     crackMaterial.map=textures[`destroy_stage_${result.stage}`];crackMaterial.needsUpdate=true;
     $('mining-fill').style.width=`${result.progress*100}%`;
   }
-  if(result.broken)toast(`挖掉了${NAMES[result.broken.type]}`);
+  if(result.broken){addDrop(result.broken);toast(`挖掉了${NAMES[result.broken.type]}，走近收集`);}
 }
 
 function updateInventory() {
@@ -156,7 +171,7 @@ function frame(now) {
     camera.setViewOffset(innerWidth,innerHeight,-innerWidth*.12,0,innerWidth,innerHeight);
   }
   if (started) camera.clearViewOffset();
-  if(playing)updateMining(dt);
+  if(playing){updateMining(dt);updateDrops(dt);}
   if (lastVersion!==world.version&&materials.dirt) rebuildTerrain();
   if (now>toastUntil) $('toast').classList.remove('visible');
   renderer.render(scene,camera);
@@ -173,5 +188,6 @@ try {
     textures[name]=texture;
     if(!name.startsWith('destroy_')) materials[name]=new THREE.MeshLambertMaterial({map:texture});
   }));
+  for(const type of TYPES)dropMaterials[type]=[0,1,2,3,4,5].map(side=>materials[textureFor(type,side)]);
   rebuildTerrain();$('start').disabled=false;$('start-label').textContent='走進小島';requestAnimationFrame(frame);
 } catch(error) {$('fatal').hidden=false;$('fatal').textContent=`素材載入失敗。請透過靜態網站網址開啟，不要直接雙擊 HTML。\n${error.message}`;}
