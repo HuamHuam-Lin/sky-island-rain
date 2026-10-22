@@ -77,7 +77,8 @@ git push -u origin main
 若使用提供的 Git bundle，可先還原完整歷史，再設定 GitHub 遠端：
 
 ```powershell
-git clone 晴雨之島-history.bundle sky-island
+git clone 晴雨之島-history.bundle sky-island-with-history
+cd sky-island-with-history
 ```
 
 ## 版本與授權
