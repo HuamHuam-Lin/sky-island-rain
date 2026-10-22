@@ -225,3 +225,17 @@ export function collectDrop(w,d,p,bag,dt){
   if(distance<.12){bag[d.type]=(bag[d.type]??0)+1;d.removed=true;return true;}
   return false;
 }
+
+export function placeBlock(w,hit,type,bag,p){
+  const fail=reason=>({ok:false,reason});
+  if(!TYPES.includes(type)||(bag[type]??0)<=0)return fail('empty');
+  if(!hit||!Array.isArray(hit.normal)||hit.normal.length!==3||!Number.isFinite(hit.distance)||hit.distance>6||hit.distance<0)return fail('target');
+  if(!hit.normal.every(Number.isInteger)||hit.normal.reduce((s,v)=>s+Math.abs(v),0)!==1)return fail('target');
+  if(!w.get(hit.x,hit.y,hit.z))return fail('target');
+  const [x,y,z]=[hit.x+hit.normal[0],hit.y+hit.normal[1],hit.z+hit.normal[2]];
+  if(!w.inside(x,y,z))return fail('bounds');
+  if(w.get(x,y,z))return fail('occupied');
+  if(overlapsBlock(p,x,y,z))return fail('player');
+  w.set(x,y,z,type);bag[type]--;
+  return {ok:true,x,y,z};
+}

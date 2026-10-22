@@ -1,5 +1,5 @@
 import * as THREE from '../vendor/three.module.js';
-import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp, MiningSession, raycast, createDrop, updateDrop, createInventory, collectDrop} from './core.js';
+import {createIsland, createPlayer, movePlayer, exposedFaces, TYPES, NAMES, EYE_HEIGHT, clamp, MiningSession, raycast, createDrop, updateDrop, createInventory, collectDrop, placeBlock} from './core.js';
 
 const $ = id => document.getElementById(id);
 const canvas = $('world');
@@ -84,6 +84,14 @@ function updateDrops(dt){
   }
 }
 function cancelMining(){leftHeld=false;mining.reset();cracks.visible=false;$('mining').hidden=true;}
+function place(){
+  if(!playing)return;
+  camera.getWorldDirection(lookDirection);
+  const hit=raycast(world,camera.position,lookDirection);
+  const result=placeBlock(world,hit,TYPES[selected],counts,player);
+  if(result.ok){updateInventory();cancelMining();toast(`放好了${NAMES[TYPES[selected]]}`);}
+  else{const messages={empty:'這一格沒有方塊，先挖一些收集',player:'這裡會卡住自己，換個位置吧',bounds:'已到小島的世界邊界',occupied:'這裡已經有方塊',target:'對準六格內的方塊表面再放置'};toast(messages[result.reason]);}
+}
 function updateMining(dt) {
   camera.getWorldDirection(lookDirection);
   currentTarget=raycast(world,camera.position,lookDirection);
@@ -139,10 +147,11 @@ document.addEventListener('keydown',e=>{
   if (!playing) return;
   if (['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
   keys.add(e.code);
+  if(e.code==='KeyQ'&&!e.repeat)place();
   if (/^Digit[1-8]$/.test(e.code)) {selected=+e.code.slice(-1)-1;updateInventory();}
 });
 document.addEventListener('keyup',e=>keys.delete(e.code));
-canvas.addEventListener('mousedown',e=>{if(playing&&e.button===0)leftHeld=true;});
+canvas.addEventListener('mousedown',e=>{if(!playing)return;if(e.button===0)leftHeld=true;if(e.button===2){e.preventDefault();place();}});
 document.addEventListener('mouseup',e=>{if(e.button===0){leftHeld=false;mining.reset();cracks.visible=false;$('mining').hidden=true;}});
 canvas.addEventListener('contextmenu',e=>e.preventDefault());
 document.addEventListener('mousemove',e=>{
