@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#e5ede6">
+  <meta name="description" content="一座浮在雲上的方塊小島。挖掘、收集、搭建，在晴雨之間蓋一處自己的屋簷。">
+  <title>晴雨之島｜空中之島</title>
+  <link rel="icon" href="assets/icons/grass.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="world" aria-label="空中之島 3D 遊戲畫面"></canvas>
+  <header class="topbar"><a class="brand" href="./" aria-label="晴雨之島首頁"><span class="brand-icon">◈</span> 晴雨之島<span class="brand-en">SKY ISLAND</span></a><div class="top-actions"><button id="weather" title="切換天氣（R）" disabled>☀ 晴天 <kbd>R</kbd></button><button id="pause" hidden>暫停 <kbd>Esc</kbd></button><button id="fullscreen" title="切換全螢幕">全螢幕 ↗</button></div></header>
+  <main id="welcome" class="welcome">
+    <div class="intro">
+      <p class="eyebrow">一座小島，一點自己的想像</p>
+      <h1>在雲上，<br>蓋一片<span>晴天。</span></h1>
+      <p class="description">挖開腳下的泥土，收起每一塊風景。<br>等雨來的時候，這裡就是你的屋簷。</p>
+      <button class="start" id="start" disabled><span id="start-label">正在準備小島…</span><span aria-hidden="true">↗</span></button>
+      <p class="small-print">不用登入，直接開始。重新整理會重建小島。</p>
+      <div class="howto"><div><kbd>W A S D</kbd><span>移動</span></div><div><kbd>Space</kbd><span>跳躍</span></div><div><kbd>按住左鍵</kbd><span>挖掘</span></div><div><kbd>右鍵</kbd><span>放置</span></div></div>
+      <details><summary>完整操作說明</summary><p>滑鼠轉視角，1～8 或滾輪選方塊。按 R 切換天氣，Esc 暫停。若瀏覽器無法鎖定滑鼠，可用方向鍵轉視角，按住 E 挖掘，Q 放置。F3 顯示效能資訊。請使用電腦鍵盤與滑鼠遊玩。</p></details>
+    </div>
+    <div class="scene-caption"><span class="caption-line"></span><div><span class="caption-number">01 / 雲上日常</span><p>風景可以拆開，<br>也可以重新拼起來。</p></div></div>
+    <footer class="landing-footer"><span>一個可以慢慢玩的方塊世界</span><span>24 × 24 × 24<span class="footer-dot">·</span> THREE.JS</span></footer>
+  </main>
+  <section id="hud" hidden aria-label="遊戲資訊">
+    <div class="location"><span class="live-dot"></span><span id="location-label">雲上草地</span><span id="shelter"></span></div>
+    <div id="crosshair" aria-hidden="true">+</div>
+    <div class="target-label" id="target-label"></div>
+    <div class="mining" id="mining" hidden><div id="mining-fill"></div></div>
+    <div class="bottom-help">WASD 移動<span>空白鍵 跳躍</span><span>左鍵 挖掘</span><span>右鍵 放置</span><span>R 天氣</span></div>
+    <div class="selected-name" id="selected-name">草地</div>
+    <nav id="inventory" class="inventory" aria-label="方塊物品欄"></nav>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </section>
+  <section id="menu" class="menu" hidden aria-labelledby="menu-title"><div class="menu-content"><p class="eyebrow">休息一下，島還在這裡</p><h2 id="menu-title">風景，等你回來。</h2><p>WASD 移動 · 空白鍵跳躍<br>按住左鍵挖，走近撿起，右鍵放回去。<br>1～8 選方塊，R 切換晴雨。</p><p class="fallback-note">滑鼠無法鎖定時：方向鍵轉視角、E 挖掘、Q 放置。</p><button id="resume" class="start">回到小島 <span>↗</span></button><button id="quality" class="text-button">畫質：省電</button></div></section>
+  <pre id="debug" hidden></pre>
+  <div id="fatal" class="fatal" role="alert" hidden></div>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
