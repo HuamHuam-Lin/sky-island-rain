@@ -1,0 +1,7 @@
+reference-assets/
+three-*.tgz
+.sites-*
+.openai/local/
+artifacts/
+node_modules/
+*.zip
