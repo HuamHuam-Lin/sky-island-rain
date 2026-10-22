@@ -65,21 +65,6 @@ node tools/audit-history.mjs
 | evidence/驗證紀錄.md | 實際測試範圍及尚未確認事項 |
 | dist/ | 可部署的完整靜態網站 |
 
-## GitHub 繳交
-
-老師要求交 GitHub 儲存庫連結，並檢查開發歷史。請在 GitHub 建立空白儲存庫後，把這個資料夾原本的 Git 歷史推送上去，不要只用網頁上傳檔案，否則會失去先測試再實作的紀錄。
-
-```powershell
-git remote add origin 你的GitHub儲存庫網址
-git push -u origin main
-```
-
-若使用提供的 Git bundle，可先還原完整歷史，再設定 GitHub 遠端：
-
-```powershell
-git clone 晴雨之島-history.bundle sky-island-with-history
-cd sky-island-with-history
-```
 
 ## 版本與授權
 
@@ -87,7 +72,5 @@ cd sky-island-with-history
 - 圖片均來自老師提供的 `sky-island-assets.zip`，沒有重畫、替換或使用其他材質。素材署名與 CC BY-NC-SA 4.0 授權保存在 `dist/assets/LICENSE.txt`。這些素材限本課程作業使用。
 - 原始素材雜湊記在 `evidence/assets-sha256.json`，可透過 `check.mjs` 核對。
 - 未讀取或複製老師範例遊戲的程式碼。
-
-作業依據：[Week 7 作業說明](https://ai-agent-literacy.pages.dev/weeks/week07/#03-homework-island)、[課程投影片第 29～42 頁](https://docs.google.com/presentation/d/19lQQgUVf6Nb7YAF4vHBsvEVN0AhzHmt5haLbzvNNCXg/htmlpresent)。
 
 效能限制：採合併可見面、剔除內部面、240 滴雨與預設 1 倍畫面比例。開發環境的效能不代表學校舊電腦；仍需到目標電腦以全螢幕實測。軟體 WebGL 的支援與速度由瀏覽器和電腦決定，不保證只有 CPU 的電腦都能達到 30 fps。
